@@ -106,7 +106,7 @@ exports.protect = catchAsync(async (req, res, next) => {
   //   });
   // };
   // const decoded3 = await verifyPromiseManual();
-  console.log(decoded);
+  // console.log(decoded);
   //decoded = id: ...., iat:...., exp: .....
   //console.log(decoded);
 

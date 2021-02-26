@@ -5,7 +5,9 @@ export const login = async (email, password) => {
   try {
     const res = await axios({
       method: 'POST',
-      url: 'http://127.0.0.1:3000/api/v1/users/login',
+      //relative path - works because API and website is hold on the same url so: (dev) http://127.0.0.1:3000/
+      //previous version just for dev: url: http://127.0.0.1:3000/api/v1/users/login
+      url: '/api/v1/users/login',
       data: {
         email,
         password,
@@ -17,7 +19,7 @@ export const login = async (email, password) => {
         location.assign('/');
       }, 1500);
     }
-    console.log(res); // struktura response z axios =>
+    // console.log(res); // struktura response z axios =>
     //res = {
     //...
     //data: {
@@ -36,7 +38,7 @@ export const logout = async () => {
   try {
     const res = await axios({
       method: 'GET',
-      url: 'http://127.0.0.1:3000/api/v1/users/logout',
+      url: '/api/v1/users/logout',
     });
 
     if (res.data.status === 'success') location.reload(true);
