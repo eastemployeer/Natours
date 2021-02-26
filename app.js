@@ -8,6 +8,7 @@ const xss = require('xss-clean');
 const hpp = require('hpp');
 const cookieParser = require('cookie-parser');
 const compression = require('compression');
+const cors = require('cors');
 
 const AppError = require('./utils/appError.js');
 const globalErrorHandler = require('./controllers/errorController.js');
@@ -24,6 +25,20 @@ const app = express();
 
 //for heroku cookies secure (authController) (no req.secure in heroku)
 app.enable('trust proxy');
+
+//adding header to request (Access-Control-Allow-Origin)
+app.use(cors()); //<--works just for simple equests (GET/POST)
+
+//Przypadek 2: API -> api.natours.com WEB/FRONTEND -> natours.com
+//chcemy pozwolic na CORS tylko dla tej subdomeny frontendu
+// app.use(
+//   cors({
+//     origin: 'https://www.natours.com',
+//   })
+// );
+
+//http OPTIONS method (just like e.g PATCH )
+app.options('*', cors()); //<-- works for the rest of requests (PATCH/PUT etc.)
 
 app.set('view engine', 'pug'); //template engine - no need to specify really
 //SCIEŻKA DO WIDOKOW - PLIKÓW PUG
