@@ -22,6 +22,9 @@ const APIFeatures = require('./utils/APIFeatures.js');
 
 const app = express();
 
+//for heroku cookies secure (authController) (no req.secure in heroku)
+app.enable('trust proxy');
+
 app.set('view engine', 'pug'); //template engine - no need to specify really
 //SCIEŻKA DO WIDOKOW - PLIKÓW PUG
 app.set('views', path.join(__dirname, 'views')); //pug templates are (always) called 'views'. And the path to them is: __dirname/views

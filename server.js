@@ -56,3 +56,12 @@ process.on('unhandledRejection', (err) => {
     process.exit(1);
   });
 });
+
+process.on('SIGTERM', () => {
+  console.log('SIGTERM RECEIVED, Shutting down');
+  //closing server after finishing all the requests
+  server.close(() => {
+    console.log('Proccess terminated');
+  });
+  //doesnt have to make process.exit(1) because SIGTERM does it
+});
