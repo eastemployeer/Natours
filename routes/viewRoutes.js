@@ -1,0 +1,43 @@
+const express = require('express');
+const viewsController = require('../controllers/viewsController.js');
+const authController = require('../controllers/authController.js');
+const bookingController = require('../controllers/bookingController.js');
+
+const viewRouter = express.Router();
+
+// viewRouter.get('/', (req, res) => {
+//   res.status(200).render('base.pug', {
+//     tour: 'The Forest Hiker', //local pug file variables
+//     user: 'Jonas',
+//   }); //bedzie szukalo tego pliku w folderze views, wczesniej okreslonym jako wlasciwy dla widoków - plików .pug
+// });
+viewRouter.get('/me', authController.protect, viewsController.getAccount);
+
+//bookings
+viewRouter.get('/my-tours', authController.protect, viewsController.getMyTours);
+
+//update user data with html forms
+viewRouter.post(
+  '/submit-user-data',
+  authController.protect,
+  viewsController.updateUserData
+);
+
+viewRouter.get(
+  '/',
+  bookingController.createBookingCheckout,
+  authController.isLoggedIn,
+  viewsController.getOverview
+);
+viewRouter.get(
+  '/tour/:slug',
+  authController.isLoggedIn,
+  viewsController.getTour
+);
+viewRouter.get(
+  '/login',
+  authController.isLoggedIn,
+  viewsController.getLoginForm
+);
+
+module.exports = viewRouter;

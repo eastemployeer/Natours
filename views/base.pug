@@ -1,0 +1,40 @@
+doctype html
+html
+    head
+        block head
+            meta(charset='UTF-8')
+            meta(name='viewport' content='width=device-width, initial-scale=1.0')
+            title Natours | #{title}
+            //-#{cos} (PUG) ==> `${cos}` (JS)
+            //- title Natours #{tour}
+            link(rel='stylesheet' href='/css/style.css')
+            link(rel='shortcut icon' type='/image/png' href='/img/favicon.png')
+            link(rel='stylesheet' href='https://fonts.googleapis.com/css?family=Lato:300,300i,700' )
+
+    body
+        //- //-przypisanie zmiennej
+        //- h1= tour 
+        //- //-buffered code (toUpperCase)
+        //- h2= user.toUpperCase()
+        //- //-h1 The Park Camper
+
+        //- //-unbuffered code = bezposrednio nic nie dodaje do outputa
+        //- - const x = 9;
+        //- h2= 2*x
+        //- p This is just text
+
+        //-HEADER
+        include _header
+
+        //- CONTENT
+        block content
+            h1 This is a placeholder 
+
+        //-FOOTER
+        include _footer
+
+        //- script(src='https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js')
+        //- script(src='/js/mapbox.js')
+        //- script(src='/js/login.js')
+        script(src='/js/bundle.js')
+        
