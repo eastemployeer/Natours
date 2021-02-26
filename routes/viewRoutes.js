@@ -11,6 +11,10 @@ const viewRouter = express.Router();
 //     user: 'Jonas',
 //   }); //bedzie szukalo tego pliku w folderze views, wczesniej okreslonym jako wlasciwy dla widoków - plików .pug
 // });
+
+//used only in /my-tours for now but made it reusable
+viewRouter.use(viewsController.alerts);
+
 viewRouter.get('/me', authController.protect, viewsController.getAccount);
 
 //bookings

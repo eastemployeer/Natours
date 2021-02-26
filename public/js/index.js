@@ -3,6 +3,7 @@ import { login, logout } from './login.js';
 import { displayMap } from './mapbox';
 import { updateSettings } from './updateSettings.js';
 import { bookTour } from './stripe.js';
+import { showAlert } from './alerts.js';
 import '@babel/polyfill';
 
 //DOM elements
@@ -11,6 +12,8 @@ const loginForm = document.querySelector('.form--login');
 const userSettings = document.querySelector('.form-user-data');
 const userPasswordSettings = document.querySelector('.form-user-password');
 const logOutBtn = document.querySelector('.nav__el--logout');
+//alert used now for signalize succesfully booked tour
+const alertMessage = document.querySelector('body').dataset.alert;
 //tour.pug
 const bookBtn = document.getElementById('book-tour');
 
@@ -75,3 +78,4 @@ if (bookBtn) {
     bookTour(tourId);
   });
 }
+if (alertMessage) showAlert('success', alertMessage);
