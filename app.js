@@ -17,6 +17,7 @@ const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
 const reviewRouter = require('./routes/reviewRoutes');
 const bookingRouter = require('./routes/bookingRoutes');
+const bookingController = require('./controllers/bookingController.js');
 const viewRouter = require('./routes/viewRoutes');
 
 const APIFeatures = require('./utils/APIFeatures.js');
@@ -112,6 +113,13 @@ const limiter = rateLimit({
 
 //will affect all routes begining with /api - limit rate
 app.use('/api', limiter);
+
+//defined here and not inside any router because function that will do something with body of this request needs to have it as stream (RAW) and not as a JSON (that is why this line is also written before express.json())
+app.post(
+  '/webhook-checkout',
+  express.raw({ type: 'application/json' }), //<-- making body as raw
+  bookingController.webhookCheckout
+);
 
 //body parser, reding data from body into req.body
 //limit - limiting body size, if greater then request won't be accepted

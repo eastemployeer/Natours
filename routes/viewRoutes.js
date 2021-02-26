@@ -25,7 +25,8 @@ viewRouter.post(
 
 viewRouter.get(
   '/',
-  bookingController.createBookingCheckout,
+  //VERSION 1 OF CREATING NEW BOOKING AND CONFIRMING PAYMENT
+  // bookingController.createBookingCheckout,
   authController.isLoggedIn,
   viewsController.getOverview
 );
