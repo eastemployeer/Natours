@@ -2,6 +2,8 @@
 
 Application for booking trips around world! It has all the basic features like logging in, booking trips and so on and many integrations with external APIs or libraries, such as Stripe (payments), SendGrid (e-mailing), Mapbox (interactive map) etc.
 
+Application is deployed on heroku [link](https://natourstours.herokuapp.com/)
+
 ### Built with
 * [Node.js](https://nodejs.org/en/)
 * [Express.js](https://expressjs.com/)
