@@ -24,7 +24,7 @@ const createSendToken = (user, statusCode, req, res) => {
   const token = signToken(user._id);
 
   //cookieOptions.secure = true means that cookie can only be send in https connection
-  if (req.secure || req.headers('x-forwarded-proto') === 'https')
+  if (req.secure || req.headers['x-forwarded-proto'] === 'https')
     cookieOptions.secure = true;
 
   res.cookie('jwt', token, cookieOptions);

@@ -90,7 +90,7 @@ exports.updateBooking = factory.updateOne(Booking);
 exports.deleteBooking = factory.deleteOne(Booking);
 
 const createBookingCheckout = async (session) => {
-  //session object -> can be seen in stripe --> dev --> webhooks
+  //session object -> can be seen in stripe --> dev --> webhooks (website)
   const tourID = session.client_reference_id;
   const userID = (await User.findOne({ email: session.customer_email }))._id;
   const price = session.amount_total / 100;

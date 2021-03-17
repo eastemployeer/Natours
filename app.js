@@ -115,6 +115,7 @@ const limiter = rateLimit({
 app.use('/api', limiter);
 
 //defined here and not inside any router because function that will do something with body of this request needs to have it as stream (RAW) and not as a JSON (that is why this line is also written before express.json())
+//stripe will send a post request to this url (specified in stripe website) after succesful transaction
 app.post(
   '/webhook-checkout',
   express.raw({ type: 'application/json' }), //<-- making body as raw

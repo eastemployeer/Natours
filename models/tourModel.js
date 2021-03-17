@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const slugify = require('slugify');
 const validator = require('validator');
 const User = require('./userModel.js');
+
 const tourSchema = new mongoose.Schema(
   {
     //schemat - przepis na dokument/rekord - struktura
