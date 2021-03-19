@@ -13,14 +13,6 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
   //2) Create checkout session
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ['card'],
-    //added query to this route and it will be used to make a booking,
-    //its not safe to do this like this because everyone who knows this url can make a booking. It's before implementing stripe webhooks
-    //summary: in this version booking is made after this route with this query is reached
-
-    //VERSION 1 OF CREATING NEW BOOKING AND CONFIRMING PAYMENT (viewRoutes.js)
-    // success_url: `${req.protocol}://${req.get('host')}/?tour=${
-    //   req.params.tourId
-    // }&user=${req.user._id}&price=${tour.price}`, //as soon as payment is successful, user will be redirected to this url
     success_url: `${req.protocol}://${req.get('host')}/my-tours?alert=booking`,
     cancel_url: `${req.protocol}://${req.get('host')}/tour/${tour.slug}`, //when payment is cancelled
     //we have access to req.user because protect middleware gets fired before
@@ -66,22 +58,6 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
 
   */
 });
-
-//VERSION 1 OF CREATING NEW BOOKING AND CONFIRMING PAYMENT (viewRoutes.js)
-// exports.createBookingCheckout = catchAsync(async (req, res, next) => {
-//   //Only temporary
-//   const { tour, user, price } = req.query;
-
-//   if (!tour || !user || !price) return next();
-
-//   await Booking.create({
-//     tour,
-//     user,
-//     price,
-//   });
-//   //redirect na url bez query, dzieki temu bedzie nieco bezpieczniej
-//   res.redirect(req.originalUrl.split('?')[0]); //->will go again the same middleware circle (but url has now no query)
-// });
 
 exports.createBooking = factory.createOne(Booking);
 exports.getBooking = factory.getOne(Booking);

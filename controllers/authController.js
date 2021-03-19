@@ -59,6 +59,7 @@ exports.signup = catchAsync(async (req, res, next) => {
   await new Email(newUser, url).sendWelcome();
   createSendToken(newUser, 201, req, res);
 });
+
 exports.login = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
   //console.log(req.body);
@@ -97,20 +98,6 @@ exports.protect = catchAsync(async (req, res, next) => {
   //2)Verification of token
   //throws error if token not valid or token expired
   const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
-
-  // const verifyPromiseManual = function () {
-  //   return new Promise((resolve, reject) => {
-  //     jwt.verify(token, process.env.JWT_SECRET, (err, data) => {
-  //       if (err) {
-  //         reject(err);
-  //       } else resolve(data);
-  //     });
-  //   });
-  // };
-  // const decoded3 = await verifyPromiseManual();
-  // console.log(decoded);
-  //decoded = id: ...., iat:...., exp: .....
-  //console.log(decoded);
 
   //3) Check if user still exists - user got deleted in meantime
   const currentUser = await User.findById(decoded.id);
@@ -190,12 +177,6 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
 
   const message = `Forgot your password? Submita PATCH request with your new password and passConfim to ${resetURL}`;
   try {
-    // await sendEmail({
-    //   email: user.email,
-    //   subject: 'Your password reset token valid for 10 minutes',
-    //   message,
-    // });
-
     await new Email(user, resetURL).sendPasswordReset();
   } catch (err) {
     //resetting

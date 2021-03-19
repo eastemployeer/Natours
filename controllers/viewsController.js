@@ -38,28 +38,16 @@ exports.getTour = catchAsync(async (req, res, next) => {
   //2) Build template
 
   //3) Render
-  res
-    .status(200)
-    // .set(
-    //   'Content-Security-Policy',
-    //   "default-src 'self' https://*.mapbox.com https://*.stripe.com ;base-uri 'self';block-all-mixed-content;font-src 'self' https: data:;frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src https://cdnjs.cloudflare.com https://api.mapbox.com https://js.stripe.com/v3/ 'self' blob: ;script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests;"
-    // )
-    .render('tour.pug', {
-      title: tour.name,
-      tour,
-    });
+  res.status(200).render('tour.pug', {
+    title: tour.name,
+    tour,
+  });
 });
 
 exports.getLoginForm = (req, res) => {
-  res
-    .status(200)
-    // .set(
-    //   'Content-Security-Policy',
-    //   "connect-src 'self' https://cdnjs.cloudflare.com"
-    // )
-    .render('login.pug', {
-      title: 'Log into your account',
-    });
+  res.status(200).render('login.pug', {
+    title: 'Log into your account',
+  });
 };
 
 exports.getAccount = (req, res) => {

@@ -5,19 +5,6 @@ const User = require('./../models/userModel.js');
 const catchAsync = require('./../utils/catchAsync.js');
 const factory = require('./handlerFactory.js');
 
-//defniniton of file name and destination
-// const multerStorage = multer.diskStorage({
-//   destination: (req, file, cb) => {
-//     //file == req.file
-//     cb(null, 'public/img/users'); //cb = callback, podobna do next() w middleware, pierwszy argument to error a drugi to destynacja
-//   },
-//   filename: (req, file, cb) => {
-//     //konwencja: user-7767326[user_id]-34434343[timestamp].jpeg
-//     const ext = file.mimetype.split('/')[1]; //mimetype: 'image/jpeg'
-//     cb(null, `user-${req.user._id}-${Date.now()}.${ext}`);
-//   },
-// });
-
 //image stored as buffer => photo available in req.file.buffer, na potrzeby resize'owania zdjęcia
 const multerStorage = multer.memoryStorage();
 
@@ -63,30 +50,9 @@ const filterObj = (obj, ...allowedFields) => {
   return newObj;
 };
 exports.getAllUsers = factory.getAll(User);
-// exports.getAllUsers = catchAsync(async (req, res, next) => {
-//   const users = await User.find();
 
-//   // const tours = await Tour.find()
-//   //   .where('duration')
-//   //   .equals(5)
-//   //   .where('difficulty')
-//   //   .equals('easy');
-
-//   res.status(200).json({
-//     status: 'success',
-//     results: users.length,
-//     data: {
-//       users,
-//     },
-//   });
-// });
 exports.getUser = factory.getOne(User);
-// exports.getUser = (req, res) => {
-//   res.status(500).json({
-//     status: 'Error',
-//     message: 'This route is not yet defined',
-//   });
-// };
+
 exports.createUser = (req, res) => {
   res.status(500).json({
     status: 'Error',
@@ -94,20 +60,8 @@ exports.createUser = (req, res) => {
   });
 };
 exports.deleteUser = factory.deleteOne(User);
-// exports.deleteUser = (req, res) => {
-//   res.status(500).json({
-//     status: 'Error',
-//     message: 'This route is not yet defined',
-//   });
-// };
+
 exports.updateUser = factory.updateOne(User);
-// exports.updateUser = (req, res) => {
-//   res.status(500).json({
-//     //internal server error
-//     status: 'Error',
-//     message: 'This route is not yet defined',
-//   });
-// };
 
 exports.updateMe = catchAsync(async (req, res, next) => {
   //1) Create error if user POSTs password data

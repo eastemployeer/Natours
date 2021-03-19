@@ -4,7 +4,6 @@ const catchAsync = require('./../utils/catchAsync.js');
 
 exports.deleteOne = (Model) => {
   return catchAsync(async (req, res, next) => {
-    // try {
     const document = await Model.findByIdAndDelete(req.params.id);
 
     if (!document) {
@@ -19,7 +18,6 @@ exports.deleteOne = (Model) => {
 };
 exports.updateOne = (Model) => {
   return catchAsync(async (req, res, next) => {
-    // try {
     const document = await Model.findByIdAndUpdate(req.params.id, req.body, {
       new: true, //updated document will be returned
       runValidators: true, //run validators specified in the schema while updating
@@ -35,18 +33,11 @@ exports.updateOne = (Model) => {
         data: document,
       },
     });
-    // } catch (err) {
-    //   res.status(400).json({
-    //     status: 'fail',
-    //     message: 'Invalid data sent!',
-    //   });
-    // }
   });
 };
 
 exports.createOne = (Model) => {
   return catchAsync(async (req, res, next) => {
-    // try {
     const newDoc = await Model.create(req.body);
 
     res.status(201).json({
@@ -55,26 +46,17 @@ exports.createOne = (Model) => {
         data: newDoc,
       },
     });
-    // } catch (err) {
-    //   res.status(400).json({
-    //     status: 'fail',
-    //     message: err,
-    //   });
-    // }
   });
 };
 exports.getOne = (Model, popOptions) => {
   return catchAsync(async (req, res, next) => {
     let query = Model.findById(req.params.id);
     if (popOptions) query = query.populate(popOptions);
-    // const tour = tours.find((el) => el.id === Number(req.params.id));
-    // try {
     //populating virtual field - sposob na wyswietlenie wszystkich recenzji dotyczacych jednego Toura. Jednoczesnie nie trzymane w bazie więc parent referncing zachowany
     const document = await query;
     if (!document) {
       return next(new AppError('No document found with that ID', 404));
     }
-    //document.findOne({_id: req.params.id})
 
     res.status(200).json({
       status: 'success',
@@ -82,12 +64,6 @@ exports.getOne = (Model, popOptions) => {
         data: document,
       },
     });
-    // } catch (err) {
-    //   res.status(404).json({
-    //     status: 'fail',
-    //     message: err,
-    //   });
-    // }
   });
 };
 exports.getAll = (Model) => {

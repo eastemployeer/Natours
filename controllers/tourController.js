@@ -65,10 +65,6 @@ exports.resizeTourImages = catchAsync(async (req, res, next) => {
   //2)images
   req.body.images = [];
 
-  //WAŻNE!!!!!!!!!!!!!!!!!!!!!
-  //funkcja asynchroniczna jest callbackiem. Z tego powodu ona sama nie zakonczy się od razu tylko zwróci od razu promise'a. Zatem req.files.images będzie najpierw wypełnione promise'ami.
-  // Może się tak zdarzyć że next() zostanie wywołane jeszcze przed resolve tego promise'a (każdego)
-  // z tego powodu trzeba poczekać na resolve każdego promise'a z tej funkcji (zrobić await wszystkich promise'ów czyli całej tablicy req.files.images)
   await Promise.all(
     req.files.images.map(async (file, i) => {
       //^^^^funkcja asynchro ktora jest cb
@@ -88,27 +84,6 @@ exports.resizeTourImages = catchAsync(async (req, res, next) => {
 //jesli mielibysmy tylko jedno pole do zdjęć w ktorym mialo by byc wiele zdjec to:
 // upload.array('images', 5);
 
-// const tours = JSON.parse(
-//   fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`)
-// );
-
-// exports.checkBody = (req, res, next) => {
-//   if (!(req.body.price && req.body.name)) {
-//     return res.status(400).json({
-//       status: 'Bad request',
-//     });
-//   }
-//   next();
-// };
-// exports.checkId = (req, res, next, val) => {
-//   if (Number(req.params.id) > tours.length) {
-//     return res.status(404).json({
-//       //return makes send response immediately
-//       status: 'Not found',
-//     });
-//   }
-//   next();
-// };
 
 exports.aliasTopTours = (req, res, next) => {
   req.query.limit = '5';
@@ -117,191 +92,11 @@ exports.aliasTopTours = (req, res, next) => {
   next();
 };
 exports.getAllTours = factory.getAll(Tour);
-// exports.getAllTours = catchAsync(async (req, res, next) => {
-//   // try {
-//   // //1a)filtering
-//   // const queryObj = { ...req.query };
-//   // const excludedFields = ['page', 'sort', 'limit', 'fields']; //query, które są nieistotne jesli chodzi o wyszukiwanie obiektu
-//   // excludedFields.forEach((el) => delete queryObj[el]); //deleting part of object
-
-//   // //1b)advanced filtering - gte,lte etc.
-//   // let queryStr = JSON.stringify(queryObj);
-//   // //konwersja wynika z faktu ze queryObj bedzie mial strukture np. {duration: {lte: 5}}, czyli bez $ przed lte
-//   // queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`); // \b - exactly this strings
-
-//   // console.log(JSON.parse(queryStr));
-
-//   //BUILDING QUERY
-//   //let query = Tour.find(JSON.parse(queryStr)); //returns query
-
-//   //2)SORTING
-//   // if (req.query.sort) {
-//   //   const sortBy = req.query.sort.split(',').join(' ');
-//   //   query = query.sort(sortBy);
-//   //   //sorting after 2 vars = sort('price ranking')
-//   // } else {
-//   //   query = query.sort('-createdAt');
-//   // }
-//   //3)FIELD LIMITING
-//   // if (req.query.fields) {
-//   //   const fields = req.query.fields.split(',').join(' ');
-//   //   query = query.select(fields);
-//   // } else {
-//   //   query = query.select('-__v'); //-something => excludes this thing
-//   // }
-
-//   //4)PAGINATION
-//   // const page = Number(req.query.page) || 1;
-//   // const limit = Number(req.query.limit) || 100;
-//   // const skip = (page - 1) * limit;
-//   // //page=2&limit=10
-//   // query = query.skip(skip).limit(limit); //skip some number of results and display some number of results (limit)
-
-//   // if (req.query.page) {
-//   //   const numTours = await Tour.countDocuments();
-//   //   if (skip >= numTours) throw new Error('This page does not exist');
-//   // }
-
-//   //EXECUTING QUERY
-//   const features = new APIFeatures(Tour.find(), req.query)
-//     .filter()
-//     .sort()
-//     .limitFields()
-//     .paginate();
-//   const tours = await features.query;
-
-//   // const tours = await Tour.find()
-//   //   .where('duration')
-//   //   .equals(5)
-//   //   .where('difficulty')
-//   //   .equals('easy');
-
-//   res.status(200).json({
-//     status: 'success',
-//     results: tours.length,
-//     data: {
-//       tours,
-//     },
-//   });
-//   // } catch (err) {
-//   //   console.log(err);
-//   //   res.status(404).json({
-//   //     status: 'fail',
-//   //     message: err,
-//   //   });
-//   // }
-// });
-
 exports.getTour = factory.getOne(Tour, { path: 'reviews' });
-// exports.getTour = catchAsync(async (req, res, next) => {
-//   // const tour = tours.find((el) => el.id === Number(req.params.id));
-//   // try {
-//   //populating virtual field - sposob na wyswietlenie wszystkich recenzji dotyczacych jednego Toura. Jednoczesnie nie trzymane w bazie więc parent referncing zachowany
-//   const tour = await Tour.findById(req.params.id).populate('reviews');
-//   if (!tour) {
-//     return next(new AppError('No tour found with that ID', 404));
-//   }
-//   //Tour.findOne({_id: req.params.id})
-
-//   res.status(200).json({
-//     status: 'success',
-//     data: {
-//       tour: tour,
-//     },
-//   });
-//   // } catch (err) {
-//   //   res.status(404).json({
-//   //     status: 'fail',
-//   //     message: err,
-//   //   });
-//   // }
-// });
-
 exports.createTour = factory.createOne(Tour);
-// exports.createTour = catchAsync(async (req, res, next) => {
-//   // try {
-//   const newTour = await Tour.create(req.body);
-
-//   res.status(201).json({
-//     status: 'success',
-//     data: {
-//       tour: newTour,
-//     },
-//   });
-//   // } catch (err) {
-//   //   res.status(400).json({
-//   //     status: 'fail',
-//   //     message: err,
-//   //   });
-//   // }
-// });
-// exports.createTour = (req, res) => {
-//   // console.log(req.body);
-//   const newId = tours[tours.length - 1].id + 1;
-//   const newTour = { id: newId, ...req.body }; //merging two objects
-//   tours.push(newTour);
-//   fs.writeFile(
-//     `${__dirname}/dev-data/data/tours-simple.json`,
-//     JSON.stringify(tours),
-//     // eslint-disable-next-line no-unused-vars
-//     (err) => {
-//       res.status(201).json({
-//         status: 'success',
-//         data: {
-//           tour: newTour,
-//         },
-//       });
-//     }
-//   );
-// };
-
 exports.updateTour = factory.updateOne(Tour);
-// exports.updateTour = catchAsync(async (req, res, next) => {
-//   // try {
-//   const tour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
-//     new: true, //updated document will be returned
-//     runValidators: true, //run validators specified in the schema while updating
-//   });
-
-//   if (!tour) {
-//     return next(new AppError('No tour found with that ID', 404));
-//   }
-
-//   res.status(200).json({
-//     status: 'success',
-//     data: {
-//       tour,
-//     },
-//   });
-//   // } catch (err) {
-//   //   res.status(400).json({
-//   //     status: 'fail',
-//   //     message: 'Invalid data sent!',
-//   //   });
-//   // }
-// });
-
 exports.deleteTour = factory.deleteOne(Tour);
 
-// exports.deleteTour = catchAsync(async (req, res, next) => {
-//   // try {
-//   const tour = await Tour.findByIdAndDelete(req.params.id);
-
-//   if (!tour) {
-//     return next(new AppError('No tour found with that ID', 404));
-//   }
-
-//   res.status(204).json({
-//     status: 'success',
-//     data: 'null',
-//   });
-//   // } catch (err) {
-//   //   res.status(404).json({
-//   //     status: 'fail',
-//   //     message: 'Invalid data sent!',
-//   //   });
-//   // }
-// });
 exports.getTourStats = catchAsync(async (req, res, next) => {
   // try {
   const stats = await Tour.aggregate([
@@ -333,12 +128,6 @@ exports.getTourStats = catchAsync(async (req, res, next) => {
     status: 'success',
     data: stats,
   });
-  // } catch (err) {
-  //   res.status(404).json({
-  //     status: 'fail',
-  //     message: 'Invalid data sent!',
-  //   });
-  // }
 });
 exports.getMonthlyPlan = catchAsync(async (req, res, next) => {
   // try {
@@ -381,12 +170,6 @@ exports.getMonthlyPlan = catchAsync(async (req, res, next) => {
     status: 'success',
     data: plan,
   });
-  // } catch (err) {
-  //   res.status(404).json({
-  //     status: 'fail',
-  //     message: 'Invalid data sent!',
-  //   });
-  // }
 });
 //tours-within/:distance/center/:latlng/unit/:unit
 //tours-within/233/center/-40,45/unit/km

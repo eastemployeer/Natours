@@ -13,17 +13,6 @@ const handleJWTExpiredError = () =>
   new AppError('Your token has expired! Please login again', 401);
 
 const handleValidationErrorDB = (err) => {
-  // errors = {
-  //     difficulty: { //[0]
-  //         message: ...,
-  //         ..
-  //     },
-  //     name: { //[1]
-  //         message: ...,
-  //         ...
-  //     }
-  //    //etc....
-  // }
   const errors = Object.values(err.errors).map((el) => el.message); //Object.values makes array from array-like object
   const message = `Invalid input data ${errors.join('. ')}`;
 
