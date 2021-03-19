@@ -1,7 +1,5 @@
 const mongoose = require('mongoose');
 const slugify = require('slugify');
-const validator = require('validator');
-const User = require('./userModel.js');
 
 const tourSchema = new mongoose.Schema(
   {
@@ -180,13 +178,6 @@ tourSchema.pre(/^find/, function (next) {
   });
   next();
 });
-
-// tourSchema.post(/^find/, function (docs, next) {
-//   //access to all documents that are returned
-//   console.log(`Query took ${Date.now() - this.start} milliseconds!`);
-//   //console.log(docs);
-//   next();
-// });
 
 //AGGREGATION MIDDLEWARE
 tourSchema.pre('aggregate', function (next) {

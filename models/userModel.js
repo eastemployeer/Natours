@@ -88,7 +88,6 @@ userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
       this.passwordChangedAt.getTime() / 1000,
       10
     ); // ms /1000 => seconds (because JWTTimestamp is in seconds)
-    // console.log(this.passwordChangedAt, JWTTimestamp);
     //true if password was changed after token was granted
     return JWTTimestamp < changedTimestamp;
   }

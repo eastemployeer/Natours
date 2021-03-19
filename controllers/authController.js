@@ -15,7 +15,6 @@ const cookieOptions = {
 };
 
 const signToken = (id) => {
-  //sign(payload, secret, options)
   return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN,
   });
@@ -54,7 +53,6 @@ exports.signup = catchAsync(async (req, res, next) => {
 
   //wysylanie maila powitalnego
 
-  //in dev: http://127.0.0.1:3000
   const url = `${req.protocol}://${req.get('host')}/me`;
   await new Email(newUser, url).sendWelcome();
   createSendToken(newUser, 201, req, res);

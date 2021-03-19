@@ -1,5 +1,4 @@
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
-const AppError = require('../utils/appError.js');
 const Tour = require('./../models/tourModel.js');
 const User = require('./../models/userModel.js');
 const Booking = require('./../models/bookingModel.js');
